@@ -19,6 +19,7 @@ class Main extends Component {
   aduSpecial = React.createRef();
   aduRight = React.createRef();
   aduNoPerm = React.createRef();
+  affordable = React.createRef();
 
 
   componentDidMount() {
@@ -33,6 +34,7 @@ class Main extends Component {
     this.appendSame();
     this.appendAduSpecial();
     this.appendRight();
+    this.appendAfford();
   }
 
   classifyText(text, isSol) {
@@ -79,6 +81,9 @@ class Main extends Component {
     }
     if(this.byRight(text) == 1){
       return 'right';
+    }
+    if(this.affordableHousing(text) == 1){
+      return 'afford';
     }
     return 'no classification';
   }
@@ -190,6 +195,15 @@ class Main extends Component {
       }
   })
   }
+
+  appendAfford(){
+    const element4 = this.affordable.current;
+    this.props.products.map((product, key) => {
+    if(this.classifyText(product.name, product.isSol) == 'afford'){
+      element4.innerHTML += product.name + " <br />";
+      }
+  })
+  }
   //aduspecial
   permitIntervention(text){
     if (text.indexOf('need permission') >= 0) { 
@@ -204,7 +218,7 @@ class Main extends Component {
   sameSolution(text){
     if (text.indexOf('same') >= 0) { 
       return 1;
-    } else if (text.indexOf('don\'t change') >= 0 || (text.indexOf('keep') >= 0) || (text.indexOf('no solution') >= 0)){ 
+    } else if (text.indexOf('don\'t change') >= 0 || (text.indexOf('keep') >= 0) || (text.indexOf('no solution') >= 0) || (text.indexOf('don\'t') >= 0)){ 
       return 1;
     }else{
       return 0;
@@ -258,6 +272,16 @@ class Main extends Component {
     if (text.indexOf('Suburban') >= 0 || text.indexOf('lifestyle') >= 0) { 
       return 1;
     } else if (text.indexOf('neighborhood characteristics') >= 0 || text.indexOf('way of life') >= 0){ 
+      return 1;
+    }else{
+      return 0;
+    }
+  }
+
+  affordableHousing(text){
+    if (text.indexOf('affordable') >= 0 || text.indexOf('zoning') >= 0) { 
+      return 1;
+    } else if (text.indexOf('subsidized') >= 0 || text.indexOf('low income') >= 0 || text.indexOf('income') >= 0){ 
       return 1;
     }else{
       return 0;
@@ -465,7 +489,13 @@ class Main extends Component {
           <h3>
           Allow detached ADUs by special permit
           </h3>
-          <div ref={this.aduSpecial}></div></div>
+          <div ref={this.aduSpecial}></div>
+          <h3>
+            Change zoning to encourage subsidized affordable housing
+          </h3>
+          <div ref={this.affordable}></div>
+          </div>
+
 
     );
   }
