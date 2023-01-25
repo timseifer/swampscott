@@ -17,6 +17,7 @@ contract Marketplace {
 		bool purchased;
 		uint upvotes;
 		uint[5] contributors;
+		bool isSol;
 	}
 
 	event ProductCreated(
@@ -151,7 +152,7 @@ contract Marketplace {
 	}
 
 
-	function createProduct(string memory _name, uint _price, uint upvotes, uint[5] memory contributors) public {
+	function createProduct(string memory _name, uint _price, uint upvotes, uint[5] memory contributors, bool isSol) public {
 		// require a name
 		require(bytes(_name).length > 0);
 		// require a valid price
@@ -159,10 +160,28 @@ contract Marketplace {
 		// make sure params good
 		// inc products count
 		productCount++;
+		//set isSol
 		//add owner to contributors
 		contributors[upvotes] = uint256(uint160(msg.sender));
 		// create the product
-		products[productCount] = Product(productCount, _name, _price, msg.sender, false, upvotes, contributors);
+		products[productCount] = Product(productCount, _name, _price, msg.sender, false, upvotes, contributors, isSol);
+		// trigger an event	
+		emit ProductCreated(productCount, _name, _price, msg.sender, false, upvotes, contributors);
+	}
+
+	function createSolution(string memory _name, uint _price, uint upvotes, uint[5] memory contributors, bool isSol) public {
+		// require a name
+		require(bytes(_name).length > 0);
+		// require a valid price
+		require(_price > 0);
+		// make sure params good
+		// inc products count
+		productCount++;
+		//set isSol
+		//add owner to contributors
+		contributors[upvotes] = uint256(uint160(msg.sender));
+		// create the product
+		products[productCount] = Product(productCount, _name, _price, msg.sender, false, upvotes, contributors, true);
 		// trigger an event	
 		emit ProductCreated(productCount, _name, _price, msg.sender, false, upvotes, contributors);
 	}
@@ -199,7 +218,7 @@ contract Marketplace {
 		emit ProductPurchased(productCount, _product.name, _product.price, msg.sender, true, _product.upvotes, _product.contributors);
 
 		if(_product.upvotes < 2){
-			createProduct(_product.name, _product.price, _product.upvotes, _product.contributors);
+			createProduct(_product.name, _product.price, _product.upvotes, _product.contributors, false);
 		}
 	}
 }

@@ -31,7 +31,7 @@ contract('Marketplace', ([deployer, seller, buyer]) => {
 		let result, productCount, histproductCount 
 		before(async () => {
 			var my_val = [1, 2, 3, 4, 5];
-			result = await marketplace.createProduct('In the beginning', web3.utils.toWei('1', 'Ether'), 2, my_val, { from: seller})
+			result = await marketplace.createProduct('In the beginning', web3.utils.toWei('1', 'Ether'), 2, my_val,true, { from: seller})
 			productCount = await marketplace.productCount()
 			histproductCount = await marketplace.historyProdCount()
 		})
@@ -46,9 +46,9 @@ contract('Marketplace', ([deployer, seller, buyer]) => {
 			assert.equal(event.purchased, false, 'purchased is correct')
 
 		// failures- product needs a name
-		await marketplace.createProduct('', web3.utils.toWei('.0001', 'Ether'), { from: seller}).should.be.rejected;
+		await marketplace.createProduct('', web3.utils.toWei('.0001', 'Ether'), true, { from: seller}).should.be.rejected;
 				// failures- product needs a name
-		await marketplace.createProduct('In the beginning', 0, { from: seller}).should.be.rejected;
+		await marketplace.createProduct('In the beginning', 0, { from: seller}, true).should.be.rejected;
 		})
 
 		it('lists products', async() => {

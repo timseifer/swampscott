@@ -73,11 +73,20 @@ class App extends Component {
     this.getArr = this.getArr.bind(this)
     this.createVoteEnd = this.createVoteEnd.bind(this)
     this.getCurrentVote = this.getCurrentVote.bind(this)
+    this.createSolution = this.createSolution.bind(this)
   }
 
-  createProduct(name, price, upvotes, contributors) {
+  createProduct(name, price, upvotes, contributors, isSol) {
     this.setState({ loading: true })
-    this.state.marketplace.methods.createProduct(name, price, upvotes, contributors).send({ from: this.state.account })
+    this.state.marketplace.methods.createProduct(name, price, upvotes, contributors, isSol).send({ from: this.state.account })
+    .once('receipt', (receipt) => {
+      this.setState({ loading: false })
+    })
+  }
+
+  createSolution(name, price, upvotes, contributors, isSol) {
+    this.setState({ loading: true })
+    this.state.marketplace.methods.createSolution(name, price, upvotes, contributors, isSol).send({ from: this.state.account })
     .once('receipt', (receipt) => {
       this.setState({ loading: false })
     })
@@ -128,6 +137,7 @@ class App extends Component {
                   historicalProducts={this.state.products_historical}
                   votez = {this.state.vote_end}
                   createProduct={this.createProduct}
+                  createSolution={this.createSolution}
                   purchaseProduct={this.purchaseProduct}
                   getArr={this.getArr} 
                   voteEnd={this.createVoteEnd}

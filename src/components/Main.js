@@ -11,6 +11,14 @@ class Main extends Component {
   negRef = React.createRef();
   neutRef = React.createRef();
   affordHouse = React.createRef();
+  difficultProcess = React.createRef();
+  diveristy = React.createRef();
+  taxes = React.createRef();
+  quality = React.createRef();
+  same = React.createRef();
+  aduSpecial = React.createRef();
+  aduRight = React.createRef();
+  aduNoPerm = React.createRef();
 
 
   componentDidMount() {
@@ -18,14 +26,34 @@ class Main extends Component {
     this.appendPositive();
     this.appendNeutral();
     this.appendHousing();
+    this.appendDiff();
+    this.appendDiversity();
+    this.appendTaxes();
+    this.appendQuality();
+    this.appendSame();
+    this.appendAduSpecial();
+    this.appendRight();
   }
 
-  classifyText(text) {
+  classifyText(text, isSol) {
     var sentiment = new Sentiment();
     var result = sentiment.analyze(text.toString());
     var result_housing = this.notEnoughAffordableHousing(text.toString())
     // console.log(text.toString())
     console.log(result_housing)
+    if(!isSol){
+    if(this.diffProcess(text) == 1){
+      return 'difficult';
+    }
+    if(this.noDiversity(text) == 1){
+      return 'diversity';
+    }
+    if(this.taxesSuck(text) == 1){
+      return 'taxes';
+    }
+    if(this.qualityWorse(text) == 1){
+      return 'quality';
+    }
     if(result_housing == 1){
       // console.log("here")
       return 1
@@ -42,13 +70,25 @@ class Main extends Component {
       return 'no classification'
     }
   }
+  }else{
+    if(this.sameSolution(text) == 1){
+      return 'same';
+    }
+    if(this.permitIntervention(text) == 1){
+      return 'permit';
+    }
+    if(this.byRight(text) == 1){
+      return 'right';
+    }
+    return 'no classification';
+  }
   }
 
   appendPositive(){
 
     const element1 = this.posRef.current;
     this.props.products.map((product, key) => {
-        if(this.classifyText(product.name) == 'positive'){
+        if(this.classifyText(product.name, product.isSol) == 'positive'){
         element1.innerHTML += product.name +" "
         element1.innerHTML += "<br />"
         }
@@ -58,7 +98,7 @@ class Main extends Component {
   appendNegative(){
     const element2 = this.negRef.current;
     this.props.products.map((product, key) => {
-      if(this.classifyText(product.name) == 'negative'){
+      if(this.classifyText(product.name, product.isSol) == 'negative'){
       element2.innerHTML += product.name + " <br />";
       }
   })
@@ -67,7 +107,7 @@ class Main extends Component {
   appendNeutral(){
     const element3 = this.neutRef.current;
     this.props.products.map((product, key) => {
-      if(this.classifyText(product.name) == 'neutral'){
+      if(this.classifyText(product.name, product.isSol) == 'neutral'){
       element3.innerHTML += product.name + " <br />";
       }
   })
@@ -76,12 +116,159 @@ class Main extends Component {
   appendHousing(){
     const element4 = this.affordHouse.current;
     this.props.products.map((product, key) => {
-      if(this.classifyText(product.name) == 1){
+      if(this.classifyText(product.name, product.isSol) == 1){
         console.log("here")
       element4.innerHTML += product.name + " <br />";
       }
   })
   }
+
+  appendDiff(){
+    const element4 = this.difficultProcess.current;
+    this.props.products.map((product, key) => {
+      if(this.classifyText(product.name, product.isSol) == 'difficult'){
+        console.log("here")
+      element4.innerHTML += product.name + " <br />";
+      }
+  })
+  }
+
+  appendDiversity(){
+    const element4 = this.diveristy.current;
+    this.props.products.map((product, key) => {
+      if(this.classifyText(product.name, product.isSol) == 'diversity'){
+        console.log("here")
+      element4.innerHTML += product.name + " <br />";
+      }
+  })
+  }
+  
+  appendTaxes(){
+    const element4 = this.taxes.current;
+    this.props.products.map((product, key) => {
+      if(this.classifyText(product.name, product.isSol) == 'taxes'){
+        console.log("here")
+      element4.innerHTML += product.name + " <br />";
+      }
+  })
+  }
+
+  appendQuality(){
+    const element4 = this.quality.current;
+    this.props.products.map((product, key) => {
+      if(this.classifyText(product.name, product.isSol) == 'quality'){
+        console.log("here")
+      element4.innerHTML += product.name + " <br />";
+      }
+  })
+  }
+
+  appendSame(){
+    const element4 = this.same.current;
+    this.props.products.map((product, key) => {
+      if(this.classifyText(product.name, product.isSol) == 'same'){
+        console.log("here")
+      element4.innerHTML += product.name + " <br />";
+      }
+  })
+  }
+
+  appendAduSpecial(){
+    const element4 = this.aduSpecial.current;
+    this.props.products.map((product, key) => {
+      if(this.classifyText(product.name, product.isSol) == 'permit'){
+        console.log("here")
+      element4.innerHTML += product.name + " <br />";
+      }
+  })
+  }
+  appendRight(){
+    const element4 = this.aduRight.current;
+    this.props.products.map((product, key) => {
+    if(this.classifyText(product.name, product.isSol) == 'right'){
+      element4.innerHTML += product.name + " <br />";
+      }
+  })
+  }
+  //aduspecial
+  permitIntervention(text){
+    if (text.indexOf('need permission') >= 0) { 
+      return 1;
+    } else if (text.indexOf('special permit') >= 0 || (text.indexOf('permit') >= 0) || (text.indexOf('government') >= 0) || (text.indexOf('regulation') >= 0) || (text.indexOf('permits') >= 0)){ 
+      return 1;
+    }else{
+      return 0;
+    }
+  }
+  //same
+  sameSolution(text){
+    if (text.indexOf('same') >= 0) { 
+      return 1;
+    } else if (text.indexOf('don\'t change') >= 0 || (text.indexOf('keep') >= 0) || (text.indexOf('no solution') >= 0)){ 
+      return 1;
+    }else{
+      return 0;
+    }
+  }
+
+    //same
+    byRight(text){
+      if (text.indexOf('right') >= 0) { 
+        return 1;
+      } else if (text.indexOf('no permit') >= 0 || (text.indexOf('no government') >= 0)){ 
+        return 1;
+      }else{
+        return 0;
+      }
+    }
+  // Onerous process to go through permit application 
+  // permit and fees
+
+  diffProcess(text){
+    if (text.indexOf('permit') >= 0) { 
+      return 1;
+    } else if (text.indexOf('fees') >= 0){ 
+      return 1;
+    }else{
+      return 0;
+    }
+  }
+
+  noDiversity(text){
+    if (text.indexOf('Diverse') >= 0 || text.indexOf('diverse') >= 0) { 
+      return 1;
+    } else if (text.indexOf('diversity') >= 0 || text.indexOf('Diversity') >= 0 || text.indexOf('community') >= 0 || text.indexOf('inclusion') >= 0){ 
+      return 1;
+    }else{
+      return 0;
+    }
+  }
+
+  taxesSuck(text){
+    if (text.indexOf('Taxes') >= 0 || text.indexOf('high taxes') >= 0) { 
+      return 1;
+    } else if (text.indexOf('tax') >= 0 || text.indexOf('schools') >= 0 || text.indexOf('education') >= 0){ 
+      return 1;
+    }else{
+      return 0;
+    }
+  }
+
+  qualityWorse(text){
+    if (text.indexOf('Suburban') >= 0 || text.indexOf('lifestyle') >= 0) { 
+      return 1;
+    } else if (text.indexOf('neighborhood characteristics') >= 0 || text.indexOf('way of life') >= 0){ 
+      return 1;
+    }else{
+      return 0;
+    }
+  }
+
+
+
+  // affordability
+
+
 
   notEnoughAffordableHousing(text){
     const classifier = new Classifier({nGramMin: 1,
@@ -106,7 +293,8 @@ class Main extends Component {
       "I'm going to be broke",
       "they need more affordable places",
       "I love afforable housing",
-      "affordable housing is better"
+      "affordable housing is better",
+      "I really like swampscott, wish it was more affordable"
 
   ]
    
@@ -149,27 +337,26 @@ class Main extends Component {
 
   render() {
     return (
-
 <div id="content" className="content">
         <h1 >What do you think are the major housing-related issues, challenges, or problems in Swampscott? </h1>
-        <form onSubmit={(event) => {
+        <form name="form1" onSubmit={(event) => {
           event.preventDefault()
-          const name = this.productName.value
-          const price = window.web3.utils.toWei("0.000005", 'Ether')
-          var my_val = [1, 2, 3, 4, 5]
-          this.props.createProduct(name, price, 0, my_val)
-          console.log(this.props)
+          var name_two = this.productName_one.value
+          var price_two = window.web3.utils.toWei("0.000005", 'Ether')
+          var my_val_two = [1, 2, 3, 4, 5]
+          this.props.createProduct(name_two, price_two, 0, my_val_two, false)
+          // console.log(this.props)
         }}>
           <div className="form-group mr-sm-2">
             <input
-              id="productName"
+              id="productName_one"
               type="text"
-              ref={(input) => { this.productName = input }}
+              ref={(input_one) => { this.productName_one= input_one }}
               className="form-control"
               placeholder="Sentence"
               required />
           </div>
-          <button type="submit" className="btn btn-primary">Add Sentence</button>
+          <button type="submit" name="button_0" className="btn btn-primary">Add Sentence</button>
         </form>
         <p>&nbsp;</p>
         <h2>Why Care? How Does it Work?</h2>
@@ -188,7 +375,7 @@ class Main extends Component {
           <tbody id="productList">
             { this.props.products.map((product, key) => {
               return(
-                !product.purchased ? <Entry key={key} product={product} purchaseProduct ={this.props.purchaseProduct} getArr ={this.props.getArr}/> : null
+                (!product.purchased && !product.isSol) ? <Entry key={key} product={product} purchaseProduct ={this.props.purchaseProduct} getArr ={this.props.getArr}/> : null
               )
             })}
           </tbody>
@@ -213,15 +400,73 @@ class Main extends Component {
           </h3>
           <div ref={this.affordHouse}></div>
           <h3>
+          Onerous process to go through permit application 
+          </h3>
+          <div ref={this.difficultProcess}></div>
+          <h3>
             Community Diversity
           </h3>
+          <div ref={this.diveristy}></div>
           <h3>
-            Permit Application
+          More housing or people means more schools and higher taxes
           </h3>
+          <div ref={this.taxes}></div>
           <h3>
-            Taxes: Monetary Upsides & Downsides
+          I moved here because of the suburban quality, I don’t want the town to be urban
           </h3>
-      </div>
+          <div ref={this.quality}></div>
+          <h1 >How do you think we should address or solve these housing issues in Swampscott?</h1>
+        <form id="form2" onSubmit={(event_one) => {
+          event_one.preventDefault()
+          const name = this.productName.value
+          const price = window.web3.utils.toWei("0.000005", 'Ether')
+          var my_val = [1, 2, 3, 4, 5]
+          this.props.createSolution(name, price, 0, my_val, true)
+        }}>
+          <div className="form-group mr-sm-3">
+            <input
+              id="productName"
+              type="text"
+              ref={(input) => { this.productName = input }}
+              className="form-control"
+              placeholder="Sentence"
+              required />
+          </div>
+          <button type="submit" name="button_1" className="btn btn-primary">Add Sentence</button>
+        </form>
+        <p>&nbsp;</p>
+        <h2>All Sentences</h2>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Sentence</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody id="productList">
+            { this.props.products.map((product, key) => {
+              return(
+                (!product.purchased && product.isSol) ? <Entry key={key} product={product} purchaseProduct ={this.props.purchaseProduct} getArr ={this.props.getArr}/> : null
+              )
+            })}
+          </tbody>
+        </table>
+        <h2>
+          Sentence Classification
+        </h2>
+        <h3>
+          Remain the same
+        </h3>
+        <div ref={this.same}></div>
+          <h3>
+          Allow ADUs without permit or by right
+          </h3>
+          <div ref={this.aduRight}></div>
+          <h3>
+          Allow detached ADUs by special permit
+          </h3>
+          <div ref={this.aduSpecial}></div></div>
+
     );
   }
 }
