@@ -20,12 +20,13 @@ class Main extends Component {
   aduRight = React.createRef();
   aduNoPerm = React.createRef();
   affordable = React.createRef();
+  coll = React.createRef()
 
 
   componentDidMount() {
-    this.appendNegative();
-    this.appendPositive();
-    this.appendNeutral();
+    // this.appendNegative();
+    // this.appendPositive();
+    // this.appendNeutral();
     this.appendHousing();
     this.appendDiff();
     this.appendDiversity();
@@ -42,7 +43,6 @@ class Main extends Component {
     var result = sentiment.analyze(text.toString());
     var result_housing = this.notEnoughAffordableHousing(text.toString())
     // console.log(text.toString())
-    console.log(result_housing)
     if(!isSol){
     if(this.diffProcess(text) == 1){
       return 'difficult';
@@ -55,6 +55,9 @@ class Main extends Component {
     }
     if(this.qualityWorse(text) == 1){
       return 'quality';
+    }
+    if(this.affordDiscuss(text) == 1){
+      return 'afford-sol';
     }
     if(result_housing == 1){
       // console.log("here")
@@ -95,6 +98,7 @@ class Main extends Component {
     this.props.products.map((product, key) => {
         if(this.classifyText(product.name, product.isSol) == 'positive'){
         element1.innerHTML += product.name +" "
+        element1.innerHTML += "#votes: " + product.upvotes + " "
         element1.innerHTML += "<br />"
         }
     })
@@ -113,7 +117,9 @@ class Main extends Component {
     const element3 = this.neutRef.current;
     this.props.products.map((product, key) => {
       if(this.classifyText(product.name, product.isSol) == 'neutral'){
-      element3.innerHTML += product.name + " <br />";
+      // if(!(element3.innerHTML.indexOf(product.name) >= 0)){
+      element3.innerHTML = product.name + " " +  " #votes: " + product.upvotes + " <br />";
+      // }
       }
   })
   }
@@ -121,9 +127,10 @@ class Main extends Component {
   appendHousing(){
     const element4 = this.affordHouse.current;
     this.props.products.map((product, key) => {
-      if(this.classifyText(product.name, product.isSol) == 1){
-        console.log("here")
-      element4.innerHTML += product.name + " <br />";
+      if(this.classifyText(product.name, product.isSol) == 1 || this.classifyText(product.name, product.isSol) == 'afford-sol'){
+        // if(!(element4.innerHTML.indexOf(product.name) >= 0)){
+      element4.innerHTML = product.name + " #votes: " + product.upvotes + " <br />";
+        // }
       }
   })
   }
@@ -132,8 +139,9 @@ class Main extends Component {
     const element4 = this.difficultProcess.current;
     this.props.products.map((product, key) => {
       if(this.classifyText(product.name, product.isSol) == 'difficult'){
-        console.log("here")
-      element4.innerHTML += product.name + " <br />";
+        // if(!(element4.innerHTML.indexOf(product.name) >= 0)){
+      element4.innerHTML = product.name + " " + " #votes: " + product.upvotes + " <br />";
+        // }
       }
   })
   }
@@ -142,8 +150,9 @@ class Main extends Component {
     const element4 = this.diveristy.current;
     this.props.products.map((product, key) => {
       if(this.classifyText(product.name, product.isSol) == 'diversity'){
-        console.log("here")
-      element4.innerHTML += product.name + " <br />";
+        // if(!(element4.innerHTML.indexOf(product.name) >= 0)){
+      element4.innerHTML = product.name + " " + " #votes: " + product.upvotes + " <br />";
+        // }
       }
   })
   }
@@ -152,8 +161,9 @@ class Main extends Component {
     const element4 = this.taxes.current;
     this.props.products.map((product, key) => {
       if(this.classifyText(product.name, product.isSol) == 'taxes'){
-        console.log("here")
-      element4.innerHTML += product.name + " <br />";
+        // if(!(element4.innerHTML.indexOf(product.name) >= 0)){
+      element4.innerHTML = product.name + " " + " #votes: " + product.upvotes + " <br />";
+        // }
       }
   })
   }
@@ -162,8 +172,9 @@ class Main extends Component {
     const element4 = this.quality.current;
     this.props.products.map((product, key) => {
       if(this.classifyText(product.name, product.isSol) == 'quality'){
-        console.log("here")
-      element4.innerHTML += product.name + " <br />";
+      // if(!(element4.innerHTML.indexOf(product.name) >= 0)){
+      element4.innerHTML = product.name + " " + " #votes: " + product.upvotes + " <br />";
+      // }
       }
   })
   }
@@ -172,8 +183,9 @@ class Main extends Component {
     const element4 = this.same.current;
     this.props.products.map((product, key) => {
       if(this.classifyText(product.name, product.isSol) == 'same'){
-        console.log("here")
-      element4.innerHTML += product.name + " <br />";
+      // if(!(element4.innerHTML.indexOf(product.name) >= 0)){
+      element4.innerHTML = product.name + " " + " #votes: " + product.upvotes + " <br />";
+      // }
       }
   })
   }
@@ -182,8 +194,9 @@ class Main extends Component {
     const element4 = this.aduSpecial.current;
     this.props.products.map((product, key) => {
       if(this.classifyText(product.name, product.isSol) == 'permit'){
-        console.log("here")
-      element4.innerHTML += product.name + " <br />";
+        //if(!(element4.innerHTML.indexOf(product.name) >= 0)){
+      element4.innerHTML = product.name + " "+ " #votes: " + product.upvotes + " <br />";
+        //}
       }
   })
   }
@@ -191,7 +204,9 @@ class Main extends Component {
     const element4 = this.aduRight.current;
     this.props.products.map((product, key) => {
     if(this.classifyText(product.name, product.isSol) == 'right'){
-      element4.innerHTML += product.name + " <br />";
+      // if(!(element4.innerHTML.indexOf(product.name) >= 0)){
+      element4.innerHTML += product.name + " " + " #votes: " + product.upvotes + " <br />";
+      // }
       }
   })
   }
@@ -200,7 +215,9 @@ class Main extends Component {
     const element4 = this.affordable.current;
     this.props.products.map((product, key) => {
     if(this.classifyText(product.name, product.isSol) == 'afford'){
-      element4.innerHTML += product.name + " <br />";
+      // if(!(element4.innerHTML.indexOf(product.name) >= 0)){
+      element4.innerHTML = product.name + " "+ " #votes: " + product.upvotes + " <br />";
+      // }
       }
   })
   }
@@ -278,6 +295,16 @@ class Main extends Component {
     }
   }
 
+  affordDiscuss(text){
+    if (text.indexOf('Affordable housing') >= 0 || text.indexOf('affordability') >= 0) { 
+      return 1;
+    } else if (text.indexOf('expensive') >= 0 || text.indexOf('broke') >= 0 || text.indexOf('cheap') >= 0 || text.indexOf('inexpensive') >= 0){ 
+      return 1;
+    }else{
+      return 0;
+    }
+  }
+
   affordableHousing(text){
     if (text.indexOf('affordable') >= 0 || text.indexOf('zoning') >= 0) { 
       return 1;
@@ -343,14 +370,14 @@ class Main extends Component {
   classifier.train(afforable_neg, 'afforable-neg')
 
   let predictions = classifier.predict(text)
-  console.log(text)
-  if (predictions.length) {
-    predictions.forEach(prediction => {
-      console.log(`${prediction.label} (${prediction.confidence})`)
-    })
-  } else {
-    console.log('No predictions returned')
-  }
+  // console.log(text)
+  // if (predictions.length) {
+  //   predictions.forEach(prediction => {
+  //     console.log(`${prediction.label} (${prediction.confidence})`)
+  //   })
+  // } else {
+  //   console.log('No predictions returned')
+  // }
 
     if (predictions.length) {
       return 1
@@ -385,14 +412,17 @@ class Main extends Component {
         <p>&nbsp;</p>
         <h2>Why Care? How Does it Work?</h2>
         <div>
-            Your response is processed for its overall sentiment, either positive or negative, and then matched to various categories of discussion. Responses here could be used to help your
-            community legislators make decisions.
+            This website is a web3 application, utilizing blockchain to facilitate dicussions surrounding accesory dwelling units in the town of Swampscott Massachusetts. Using metamask, people can pariticpate 
+            in complex conversations, have their responses recorded on a ledger, and maintain their anonymity. 
         </div>
         <h2>All Sentences</h2>
         <table className="table">
           <thead>
             <tr>
-              <th scope="col">Sentence</th>
+            <th scope="col">Sentence</th>
+              <th scope="col">Upvote Fee</th>
+              <th scope="col">Upvotes</th>
+              <th scope="col">Owner</th>
               <th scope="col"></th>
             </tr>
           </thead>
@@ -407,37 +437,37 @@ class Main extends Component {
         <h2>
           Sentence Classification
         </h2>
-        <h3>
-            Positive Positions
-        </h3>
-          <div ref={this.posRef}></div>
-        <h3>
-           Negative Positions
-        </h3>
-          <div ref={this.negRef}></div>
-          <h3>
-           Neutral Positions
-        </h3>
-          <div ref={this.neutRef}></div>
           <h3>
             Affordability Discussion
           </h3>
           <div ref={this.affordHouse}></div>
+          <br>
+          </br>
           <h3>
-          Onerous process to go through permit application 
+          Onerous Process To Go Through Permit Application 
           </h3>
           <div ref={this.difficultProcess}></div>
+          <br>
+          </br>
           <h3>
             Community Diversity
           </h3>
           <div ref={this.diveristy}></div>
+          <br>
+          </br>
           <h3>
-          More housing or people means more schools and higher taxes
+          More Housing Or People Means More Schools And Higher Taxes
           </h3>
           <div ref={this.taxes}></div>
+          <br>
+          </br>
           <h3>
-          I moved here because of the suburban quality, I don’t want the town to be urban
+          I Moved Here Because Of The Suburban Quality, I Don’t Want The Town To Be Urban
           </h3>
+          <br>
+          </br>
+          <br>
+          </br>
           <div ref={this.quality}></div>
           <h1 >How do you think we should address or solve these housing issues in Swampscott?</h1>
         <form id="form2" onSubmit={(event_one) => {
@@ -463,7 +493,10 @@ class Main extends Component {
         <table className="table">
           <thead>
             <tr>
-              <th scope="col">Sentence</th>
+            <th scope="col">Sentence</th>
+              <th scope="col">Upvote Fee</th>
+              <th scope="col">Upvotes</th>
+              <th scope="col">Owner</th>
               <th scope="col"></th>
             </tr>
           </thead>
@@ -479,21 +512,31 @@ class Main extends Component {
           Sentence Classification
         </h2>
         <h3>
-          Remain the same
+          Remain The Same
         </h3>
         <div ref={this.same}></div>
+        <br>
+        </br>
           <h3>
-          Allow ADUs without permit or by right
+          Allow ADUs Without Permit Or By Right
           </h3>
           <div ref={this.aduRight}></div>
+          <br>
+          </br>
           <h3>
-          Allow detached ADUs by special permit
+          Allow detached ADUs By Special Permit
           </h3>
           <div ref={this.aduSpecial}></div>
+          <br>
+          </br>
           <h3>
-            Change zoning to encourage subsidized affordable housing
+            Change Zoning To Encourage Subsidized Affordable Housing
           </h3>
           <div ref={this.affordable}></div>
+          <br>
+          </br>
+          <br>
+          </br>
           </div>
 
 

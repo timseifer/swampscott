@@ -216,9 +216,6 @@ contract Marketplace {
 		address(_seller).transfer(msg.value);
 		// trigger an event
 		emit ProductPurchased(productCount, _product.name, _product.price, msg.sender, true, _product.upvotes, _product.contributors);
-
-		if(_product.upvotes < 2){
-			createProduct(_product.name, _product.price, _product.upvotes, _product.contributors, false);
-		}
+		createProduct(_product.name, _product.price, _product.upvotes, _product.contributors, _product.isSol);
 	}
 }
