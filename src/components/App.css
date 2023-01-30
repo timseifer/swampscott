@@ -3,39 +3,45 @@
 	display:inline-block;
 	margin: 5px;
 	float:left;
-	color:balck;
+	color:black;
 
 }
 .btn{
 	color:black;
-	background-color: #DDA0DD;
-	border-color: #8A2BE2;
+	background-color: #d3d5dd;
+	border-color: #4a454e;
 }
 
 
 @import url('https://fonts.googleapis.com/css2?family=Heebo&display=swap');
 
 .content{
-	font-family: 'Heebo';
+	font-family: 'Times';
 	color: black;
 }
 h1{
+
 	text-align: center;
 	color: black;
 }
 
 h2{
+	text-decoration: underline;
 	margin: 1%;
 	text-align: center;
-	color: black;
+	color: rgb(0, 0, 0);
 }
 
+h3 {
+	/* list-style-type: circle; */
+	color: rgb(81, 78, 78);
+}
 tr{
 	color: black;
 }
 
 .all_encomp{
-	background-color: #D8BFD8;
+	background-color: #d0d2da;
 	position: fixed;
     bottom: 0;
     width: 100%;
