@@ -389,26 +389,9 @@ class Main extends Component {
   render() {
     return (
 <div id="content" className="content">
-        {
-        /* <form name="form1" onSubmit={(event) => {
-          event.preventDefault()
-          var name_two = this.productName_one.value
-          var price_two = window.web3.utils.toWei("0.000005", 'Ether')
-          var my_val_two = [1, 2, 3, 4, 5]
-          this.props.createProduct(name_two, price_two, 0, my_val_two, false)
-          // console.log(this.props)
-        }}>
-          <div className="form-group mr-sm-2">
-            <input
-              id="productName_one"
-              type="text"
-              ref={(input_one) => { this.productName_one= input_one }}
-              className="form-control"
-              placeholder="Sentence"
-              required />
-          </div>
-          <button type="submit" name="button_0" className="btn btn-primary">Add Sentence</button>
-        </form> */}
+        <h1>Swampscott Community Engagement with Blockchain Project: Community_inPUT</h1>
+        <h2>Town of Swampscott and Tufts University's Department of Urban and Environmental Policy and Planning</h2>
+        
         <p>&nbsp;</p>
         <h2>Why Care? How Does it Work?</h2>
         <div>
@@ -492,27 +475,9 @@ class Main extends Component {
           <br>
           </br>
           <div ref={this.quality}></div>
-          <h1 >How do you think we should address or solve these housing issues in Swampscott?</h1>
-        <form id="form2" onSubmit={(event_one) => {
-          event_one.preventDefault()
-          const name = this.productName.value
-          const price = window.web3.utils.toWei("0.000005", 'Ether')
-          var my_val = [1, 2, 3, 4, 5]
-          this.props.createSolution(name, price, 0, my_val, true)
-        }}>
-          <div className="form-group mr-sm-3">
-            <input
-              id="productName"
-              type="text"
-              ref={(input) => { this.productName = input }}
-              className="form-control"
-              placeholder="Sentence"
-              required />
-          </div>
-          <button type="submit" name="button_1" className="btn btn-primary">Add Sentence</button>
-        </form>
+          <h2 >How do you think we should address or solve these housing issues in Swampscott?</h2>
         <p>&nbsp;</p>
-        <h2>All Sentences</h2>
+        <h2>Answers</h2>
         <table className="table">
           <thead>
             <tr>
@@ -531,6 +496,25 @@ class Main extends Component {
             })}
           </tbody>
         </table>
+        <h1 >What do you think? </h1>
+        <form id="form2" onSubmit={(event_one) => {
+          event_one.preventDefault()
+          const name = this.productName.value
+          const price = window.web3.utils.toWei("0.000005", 'Ether')
+          var my_val = [1, 2, 3, 4, 5]
+          this.props.createSolution(name, price, 0, my_val, true)
+        }}>
+          <div className="form-group mr-sm-3">
+            <input
+              id="productName"
+              type="text"
+              ref={(input) => { this.productName = input }}
+              className="form-control"
+              placeholder="Sentence"
+              required />
+          </div>
+          <button type="submit" name="button_1" className="btn btn-primary">Add Sentence</button>
+        </form>
         <h2>
           Sentence Classification
         </h2>
