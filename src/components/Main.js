@@ -389,7 +389,53 @@ class Main extends Component {
   render() {
     return (
 <div id="content" className="content">
-        <h1 >What do you think are the major housing-related issues, challenges, or problems in Swampscott? </h1>
+        {
+        /* <form name="form1" onSubmit={(event) => {
+          event.preventDefault()
+          var name_two = this.productName_one.value
+          var price_two = window.web3.utils.toWei("0.000005", 'Ether')
+          var my_val_two = [1, 2, 3, 4, 5]
+          this.props.createProduct(name_two, price_two, 0, my_val_two, false)
+          // console.log(this.props)
+        }}>
+          <div className="form-group mr-sm-2">
+            <input
+              id="productName_one"
+              type="text"
+              ref={(input_one) => { this.productName_one= input_one }}
+              className="form-control"
+              placeholder="Sentence"
+              required />
+          </div>
+          <button type="submit" name="button_0" className="btn btn-primary">Add Sentence</button>
+        </form> */}
+        <p>&nbsp;</p>
+        <h2>Why Care? How Does it Work?</h2>
+        <div>
+            This website is a web3 application, utilizing blockchain to facilitate dicussions surrounding accesory dwelling units in the town of Swampscott Massachusetts. Using metamask, people can pariticpate 
+            in complex conversations, have their responses recorded on a ledger, and maintain their anonymity. 
+        </div>
+        <h2 >What do you think are the major housing-related issues, challenges, or problems in Swampscott?</h2>
+        <h2>Answers</h2>
+        <table className="table">
+          <thead>
+            <tr>
+            <th scope="col">Sentence</th>
+              <th scope="col">Upvote Fee</th>
+              <th scope="col">Upvotes</th>
+              <th scope="col">Owner</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody id="productList">
+            { this.props.products.map((product, key) => {
+              return(
+                (!product.purchased && !product.isSol) ? <Entry key={key} product={product} purchaseProduct ={this.props.purchaseProduct} getArr ={this.props.getArr}/> : null
+              )
+            })}
+          </tbody>
+        </table>
+        <h1 >What do you think? </h1>
         <form name="form1" onSubmit={(event) => {
           event.preventDefault()
           var name_two = this.productName_one.value
@@ -409,31 +455,6 @@ class Main extends Component {
           </div>
           <button type="submit" name="button_0" className="btn btn-primary">Add Sentence</button>
         </form>
-        <p>&nbsp;</p>
-        <h2>Why Care? How Does it Work?</h2>
-        <div>
-            This website is a web3 application, utilizing blockchain to facilitate dicussions surrounding accesory dwelling units in the town of Swampscott Massachusetts. Using metamask, people can pariticpate 
-            in complex conversations, have their responses recorded on a ledger, and maintain their anonymity. 
-        </div>
-        <h2>All Sentences</h2>
-        <table className="table">
-          <thead>
-            <tr>
-            <th scope="col">Sentence</th>
-              <th scope="col">Upvote Fee</th>
-              <th scope="col">Upvotes</th>
-              <th scope="col">Owner</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody id="productList">
-            { this.props.products.map((product, key) => {
-              return(
-                (!product.purchased && !product.isSol) ? <Entry key={key} product={product} purchaseProduct ={this.props.purchaseProduct} getArr ={this.props.getArr}/> : null
-              )
-            })}
-          </tbody>
-        </table>
         <h2>
           Sentence Classification
         </h2>
@@ -446,6 +467,8 @@ class Main extends Component {
           <h3>
           Onerous Process To Go Through Permit Application 
           </h3>
+          {/* add ID here for style */}
+          {/* <div ref={this.difficultProcess} id=""></div> */}
           <div ref={this.difficultProcess}></div>
           <br>
           </br>
