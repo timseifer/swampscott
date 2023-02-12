@@ -389,17 +389,21 @@ class Main extends Component {
   render() {
     return (
 <div id="content" className="content">
-        <h1>Swampscott Community Engagement with Blockchain Project: Community_inPUT</h1>
+        <h1 id="main_header"><p>&nbsp;</p>Swampscott Community Engagement with Blockchain Project: Community_inPUT<p>&nbsp;</p></h1>
         <h2>Town of Swampscott and Tufts University's Department of Urban and Environmental Policy and Planning</h2>
         
+        <div id="desc">
         <p>&nbsp;</p>
         <h2>Why Care? How Does it Work?</h2>
-        <div>
+        <div id="desc_text">
             This website is a web3 application, utilizing blockchain to facilitate dicussions surrounding accesory dwelling units in the town of Swampscott Massachusetts. Using metamask, people can pariticpate 
             in complex conversations, have their responses recorded on a ledger, and maintain their anonymity. 
         </div>
+        <p>&nbsp;</p>
+        </div>
+        <p>&nbsp;</p>
         <h2 >What do you think are the major housing-related issues, challenges, or problems in Swampscott?</h2>
-        <h2>Answers</h2>
+        <h2 id="answers">Answers</h2>
         <table className="table">
           <thead>
             <tr>
@@ -418,6 +422,7 @@ class Main extends Component {
             })}
           </tbody>
         </table>
+        <p>&nbsp;</p>
         <h1 >What do you think? </h1>
         <form name="form1" onSubmit={(event) => {
           event.preventDefault()
@@ -438,10 +443,13 @@ class Main extends Component {
           </div>
           <button type="submit" name="button_0" className="btn btn-primary">Add Sentence</button>
         </form>
+        <p>&nbsp;</p>
         <h2>
           Sentence Classification
         </h2>
-          <h3>
+          <div id="sen_class_1">
+        
+          <h3 id="aff_dis">
             Affordability Discussion
           </h3>
           <div ref={this.affordHouse}></div>
@@ -451,8 +459,8 @@ class Main extends Component {
           Onerous Process To Go Through Permit Application 
           </h3>
           {/* add ID here for style */}
-          {/* <div ref={this.difficultProcess} id=""></div> */}
           <div ref={this.difficultProcess}></div>
+          {/* <div ref={this.difficultProcess}></div> */}
           <br>
           </br>
           <h3>
@@ -475,9 +483,11 @@ class Main extends Component {
           <br>
           </br>
           <div ref={this.quality}></div>
-          <h2 >How do you think we should address or solve these housing issues in Swampscott?</h2>
-        <p>&nbsp;</p>
-        <h2>Answers</h2>
+          </div>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <h2>How do you think we should address or solve these housing issues in Swampscott?</h2>
+        <h2 id="answers">Answers</h2>
         <table className="table">
           <thead>
             <tr>
@@ -496,6 +506,7 @@ class Main extends Component {
             })}
           </tbody>
         </table>
+        <p>&nbsp;</p>
         <h1 >What do you think? </h1>
         <form id="form2" onSubmit={(event_one) => {
           event_one.preventDefault()
@@ -515,9 +526,11 @@ class Main extends Component {
           </div>
           <button type="submit" name="button_1" className="btn btn-primary">Add Sentence</button>
         </form>
+        <p>&nbsp;</p>
         <h2>
           Sentence Classification
         </h2>
+        <div id="sen_class_1">
         <h3>
           Remain The Same
         </h3>
@@ -545,6 +558,9 @@ class Main extends Component {
           <br>
           </br>
           </div>
+          <p>&nbsp;</p>
+          </div>
+          
 
 
     );

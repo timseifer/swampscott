@@ -25,23 +25,38 @@ h1{
 	color: black;
 }
 
+#main_header{
+	padding-top: 20;
+	padding-bottom: 20;
+	background-color: #ececec;
+	font-weight: bold;
+	text-transform: uppercase;
+	border-bottom: 20px outset rgb(0, 0, 0);
+	position: relative;  
+	font-size: 25px;
+	font-family: Georgia;
+}
+
 h2{
-	text-decoration: underline;
+	/* text-decoration: underline; */
+	text-transform: uppercase;
+	font-family: "Georgia";
 	margin: 1%;
 	text-align: center;
 	color: rgb(0, 0, 0);
 }
 
 h3 {
-	/* list-style-type: circle; */
-	color: rgb(81, 78, 78);
+	color: rgb(0, 0, 0);
+	padding-left: 20px;
 }
 tr{
 	color: black;
+	
 }
 
 .all_encomp{
-	background-color: #d0d2da;
+	background-color: #ececec;
 	position: fixed;
     bottom: 0;
     width: 100%;
@@ -50,6 +65,36 @@ tr{
 
 }
 
+#desc{
+	/* border-top: 1px outset rgb(0, 0, 0); */
+	border-bottom: 1px outset rgb(0, 0, 0);
+}
+
+#desc_text{
+	text-align: center;
+}
+#sen_class_1{
+	padding: 20px;
+	border: 5px outset rgb(0, 0, 0);
+	border-top: 20px outset rgb(0, 0, 0);
+	border-right: none;
+	border-left: none;
+	border-bottom: none;
+	/* margin-right: 30px;
+	margin-left: 30px; */
+	background-color: #dbdbdb;
+}
+
+
+#aff_dis{
+	padding-top: 35px;
+}
+
+#answers{
+	font-style: italic;
+	font-size: 22px;
+	/* letter-spacing: 3px; */
+}
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
 	background-color: #eee;
