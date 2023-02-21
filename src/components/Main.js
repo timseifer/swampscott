@@ -452,7 +452,7 @@ class Main extends Component {
           <h3 id="aff_dis">
             Affordability Discussion
           </h3>
-          <div ref={this.affordHouse}></div>
+          <div ref={this.affordHouse} className="affordability"></div>
           <br>
           </br>
           <h3>
