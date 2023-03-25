@@ -110,7 +110,7 @@ contract Marketplace {
 			Product memory _product;
 			for(uint i = 0; i < vote_end; i++){
 				_product = products[i];
-				if(_product.upvotes >= 2){
+				if(_product.upvotes >= 5){
 						historyProdCount++;
 						products_historical = strConcat(products_historical, products[i].name);
 				}
@@ -162,7 +162,7 @@ contract Marketplace {
 		productCount++;
 		//set isSol
 		//add owner to contributors
-		contributors[upvotes] = uint256(uint160(msg.sender));
+		// contributors[upvotes] = uint256(uint160(msg.sender));
 		// create the product
 		products[productCount] = Product(productCount, _name, _price, msg.sender, false, upvotes, contributors, isSol);
 		// trigger an event	
@@ -179,27 +179,23 @@ contract Marketplace {
 		productCount++;
 		//set isSol
 		//add owner to contributors
-		contributors[upvotes] = uint256(uint160(msg.sender));
+		// contributors[upvotes] = uint256(uint160(msg.sender));
 		// create the product
-		products[productCount] = Product(productCount, _name, _price, msg.sender, false, upvotes, contributors, true);
+		products[productCount] = Product(productCount, _name, _price, msg.sender, true, upvotes, contributors, true);
 		// trigger an event	
 		emit ProductCreated(productCount, _name, _price, msg.sender, false, upvotes, contributors);
 	}
 
-	function purchaseProduct(uint _id) public payable {
+	function purchaseProduct(uint _id, uint _price) public {
 		// fetch product
 		Product memory _product = products[_id];	
 		// fetch the owner
-		address payable _seller = _product.owner;
+		address _seller = _product.owner;
 		// make sure the product has a valid id
 		require(_product.id > 0 && _product.id <= productCount);
-		// make sure they sent enough ether
-		require(msg.value >= _product.price);
-		// require product has not already been purchased
-		require(!_product.purchased);
-		// require that the buyer is not the seller
+		// require(msg.value >= _product.price);
+		// require(!_product.purchased);
 		require(_seller != msg.sender);
-		// require that the buyer is not a previous contributor (i.e already upvoted)
 
 
 		// purchase it -> transfer ownership to buyer
@@ -209,13 +205,13 @@ contract Marketplace {
 		// increment upvotes of product
 		_product.upvotes += 1;
 		//add purchaser to contributors
-		_product.contributors[_product.upvotes] = uint256(uint160(_product.owner));
+		// _product.contributors[_product.upvotes] = uint256(uint160(_product.owner));
 		//update the product
-		products[_id] = _product;
+		products[_id] = Product(productCount, _product.name, _price, _product.owner, false, _product.upvotes, _product.contributors, _product.isSol);
 		// pay the seller by sending them ether
-		address(_seller).transfer(msg.value);
+		// address(_seller).transfer(msg.value);
 		// trigger an event
-		emit ProductPurchased(productCount, _product.name, _product.price, msg.sender, true, _product.upvotes, _product.contributors);
-		createProduct(_product.name, _product.price, _product.upvotes, _product.contributors, _product.isSol);
+		// emit ProductPurchased(productCount, _product.name, _product.price, msg.sender, true, _product.upvotes, _product.contributors);
+		emit ProductCreated(productCount, _product.name, _price, _product.owner, false, _product.upvotes, _product.contributors);
 	}
 }

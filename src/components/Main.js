@@ -4,6 +4,9 @@ import Entry from './Entry'
 import './typewriter.css'
 import Sentiment from 'sentiment';
 import Classifier from 'ml-classify-text';
+import './House.css'
+import './Blockchain.css'
+import ScrollTrigger from 'react-scroll-trigger';
 
 
 class Main extends Component {
@@ -19,8 +22,11 @@ class Main extends Component {
   aduSpecial = React.createRef();
   aduRight = React.createRef();
   aduNoPerm = React.createRef();
+  afford_sol = React.createRef();
   affordable = React.createRef();
-  coll = React.createRef()
+  coll = React.createRef();
+  other = React.createRef();
+  other_sol = React.createRef();
 
 
   componentDidMount() {
@@ -36,6 +42,9 @@ class Main extends Component {
     this.appendAduSpecial();
     this.appendRight();
     this.appendAfford();
+    this.appendOther();
+    this.appendOtherSol();
+    this.appendAffordSol();
   }
 
   classifyText(text, isSol) {
@@ -44,52 +53,55 @@ class Main extends Component {
     var result_housing = this.notEnoughAffordableHousing(text.toString())
     // console.log(text.toString())
     if(!isSol){
-    if(this.diffProcess(text) == 1){
-      return 'difficult';
-    }
-    if(this.noDiversity(text) == 1){
-      return 'diversity';
-    }
-    if(this.taxesSuck(text) == 1){
-      return 'taxes';
-    }
-    if(this.qualityWorse(text) == 1){
-      return 'quality';
-    }
-    if(this.affordDiscuss(text) == 1){
-      return 'afford-sol';
-    }
-    if(result_housing == 1){
-      // console.log("here")
-      return 1
-    }else{
-    if (result.score > 0) {
-      return 'positive';
-    } else if (result.score < 0) {
-      return 'negative';
-    } else if (result.tokens[0] != '[object'){
-      //console.log(result.tokens[0])
-      return 'neutral';
-    }
-    else{
-      return 'no classification'
-    }
-  }
+      if(this.diffProcess(text) == 1){
+        return 'difficult';
+      }else if(this.noDiversity(text) == 1){
+        return 'diversity';
+      }else if(this.taxesSuck(text) == 1){
+        return 'taxes';
+      }else if(this.qualityWorse(text) == 1){
+        return 'quality';
+      }else if(this.affordDiscuss(text) == 1){
+        console.log(text);
+        return 'afford-sol';
+      }else{
+        return 'other';
+      }
   }else{
     if(this.sameSolution(text) == 1){
       return 'same';
-    }
-    if(this.permitIntervention(text) == 1){
+    }else if(this.permitIntervention(text) == 1){
       return 'permit';
-    }
-    if(this.byRight(text) == 1){
+    }else if(this.byRight(text) == 1){
       return 'right';
-    }
-    if(this.affordableHousing(text) == 1){
+    }else if(this.affordableHousing(text) == 1){
       return 'afford';
+    }else{
+      return 'other-sol';
     }
-    return 'no classification';
   }
+  }
+
+  appendOther(){
+    const element4 = this.other.current;
+    this.props.products.map((product, key) => {
+      if(this.classifyText(product.name, product.isSol) == 'other'){
+      if(!(element4.innerHTML.indexOf(product.name) >= 0)){
+      element4.innerHTML += product.name + " " + " #votes: " + product.upvotes + " <br />";
+      }
+      }
+  })
+  }
+
+  appendOtherSol(){
+    const element4 = this.other_sol.current;
+    this.props.products.map((product, key) => {
+      if(this.classifyText(product.name, product.isSol) == 'other-sol'){
+      if(!(element4.innerHTML.indexOf(product.name) >= 0)){
+      element4.innerHTML += product.name + " " + " #votes: " + product.upvotes + " <br />";
+      }
+      }
+  })
   }
 
   appendPositive(){
@@ -200,6 +212,19 @@ class Main extends Component {
       }
   })
   }
+
+  appendAffordSol(){
+    const element4 = this.affordHouse.current;
+    this.props.products.map((product, key) => {
+    if(this.classifyText(product.name, product.isSol) == 'afford-sol'){
+      // if(!(element4.innerHTML.indexOf(product.name) >= 0)){
+      element4.innerHTML += product.name + " " + " #votes: " + product.upvotes + " <br />";
+      // }
+      }
+  })
+  }
+
+
   appendRight(){
     const element4 = this.aduRight.current;
     this.props.products.map((product, key) => {
@@ -256,7 +281,7 @@ class Main extends Component {
   // permit and fees
 
   diffProcess(text){
-    if (text.indexOf('permit') >= 0) { 
+    if (text.indexOf('permit') >= 0 || text.indexOf('difficult') >= 0 || text.indexOf('confusing') >= 0) { 
       return 1;
     } else if (text.indexOf('fees') >= 0){ 
       return 1;
@@ -266,7 +291,7 @@ class Main extends Component {
   }
 
   noDiversity(text){
-    if (text.indexOf('Diverse') >= 0 || text.indexOf('diverse') >= 0) { 
+    if (text.indexOf('Diverse') >= 0 || text.indexOf('diverse') >= 0 || text.indexOf('white') >= 0|| text.indexOf('black') >= 0 ) { 
       return 1;
     } else if (text.indexOf('diversity') >= 0 || text.indexOf('Diversity') >= 0 || text.indexOf('community') >= 0 || text.indexOf('inclusion') >= 0){ 
       return 1;
@@ -296,7 +321,7 @@ class Main extends Component {
   }
 
   affordDiscuss(text){
-    if (text.indexOf('Affordable housing') >= 0 || text.indexOf('affordability') >= 0) { 
+    if (text.indexOf('Affordable housing') >= 0 || text.indexOf('affordability') >= 0 || text.indexOf('affordable') >= 0) { 
       return 1;
     } else if (text.indexOf('expensive') >= 0 || text.indexOf('broke') >= 0 || text.indexOf('cheap') >= 0 || text.indexOf('inexpensive') >= 0){ 
       return 1;
@@ -314,7 +339,6 @@ class Main extends Component {
       return 0;
     }
   }
-
 
 
   // affordability
@@ -387,23 +411,101 @@ class Main extends Component {
   }
 
   render() {
+
+
     return (
 <div id="content" className="content">
-        <h1 id="main_header"><p>&nbsp;</p>Swampscott Community Engagement with Blockchain Project: Community_inPUT<p>&nbsp;</p></h1>
-        <h2>Town of Swampscott and Tufts University's Department of Urban and Environmental Policy and Planning</h2>
-        
+        <h1 id="main_header"><p>&nbsp;</p>Swampscott Blockchain Project: Community_inPUT<p>&nbsp;</p></h1>
+        <h2 id = "secondary_header">Town of Swampscott and Tufts University's Department of Urban and Environmental Policy and Planning</h2>
+        {/* <div className="wrap"> */}
+        <div className="house__holder">
+            <div className="sun"></div>
+            <div className="cloud__holder">
+                <div class="x1">
+                    <div class="cloud"></div>
+                </div>
+
+                <div class="x2">
+                    <div class="cloud"></div>
+                </div>
+
+                <div class="x3">
+                    <div class="cloud"></div>
+                </div>
+
+                <div class="x4">
+                    <div class="cloud"></div>
+                </div>
+
+                <div class="x5">
+                    <div class="cloud"></div>
+                </div>
+            </div>
+
+            <div className="house__base">
+                <div className="house__side house__garage">
+                    <div className="house__garage-door">
+                        <span className="shadow"></span>
+                        <span className="shadow shadow1"></span>
+                        <span className="shadow shadow2"></span>
+                        <span className="shadow shadow3"></span>
+                        <span className="house__handle"></span>
+                    </div>
+                </div>
+                <div className="house__side house__front">
+                    <div className="house__roof">
+                        <div className="house__chimney">
+                            <span className="house__chimney-smoke"></span>
+                            <span className="house__chimney-smoke"></span>
+                            <span className="house__chimney-smoke"></span>
+                            <span className="house__chimney-smoke"></span>
+                            <span className="house__chimney-smoke"></span>
+                        </div>
+                        <span className="house__roof-window"></span>
+                        <span className="house__roof-shadow"></span>
+                        <span className="house__roof-shadow house__roof-shadow--sec"></span>
+                    </div>
+                    <div className="house__door">
+                        <span className="house__eye-thing"></span>
+                        <span className="house__handle house__door-handle"></span>
+                        <span className="house__mail-box"></span>
+                    </div>
+                    <div className="house__window house__front-window">
+                        <span className="house__shine"></span>
+                        <span className="house__window-brick"></span>
+                    </div>
+                </div>
+                <div className="house__side house__back">
+                    <div className="house__roof-top">
+                        <span className="house__shine house__shine--roof"></span>
+                    </div>
+                    <div className="house__window house__back-window">
+                        <span className="house__shine"></span>
+                        <span className="house__window-brick house__window-brick--sec"></span>
+                    </div>
+                    <div className="house__window house__back-window--sec">
+                        <span className="house__shine"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div className='second_container'>
         <div id="desc">
         <p>&nbsp;</p>
         <h2>Why Care? How Does it Work?</h2>
         <div id="desc_text">
-            This website is a web3 application, utilizing blockchain to facilitate dicussions surrounding accesory dwelling units in the town of Swampscott Massachusetts. Using metamask, people can pariticpate 
-            in complex conversations, have their responses recorded on a ledger, and maintain their anonymity. 
+            This website is a web3 application, utilizing blockchain to facilitate discussions surrounding accesory dwelling units in the Town of Swampscott Massachusetts. Using metamask or another digital wallet, people can participate 
+            in complex conversations, have their responses recorded on a ledger, and maintain their anonymity. Currently the Town of Swampscott is discussing legislation related to accessory dwelling units (ADUs) which are secondary dwelling units located on the same lot as a primary residence. They are also commonly known as granny flats, in-law units, or backyard cottages. ADUs can be attached or detached from the main residence and typically have their own entrance, kitchen, bathroom, and living space. They are intended to provide additional housing options on existing residential properties, and can be used to accommodate family members, provide rental income, or serve as guest quarters. ADUs have gained popularity in recent years as a way to increase the housing supply, improve housing affordability, and promote more sustainable land use. Please note that you
+            cannot upvote your own posts.
         </div>
+        <br>
+        </br>
+        <br>
+        </br>
         <p>&nbsp;</p>
         </div>
         <p>&nbsp;</p>
-        <h2 >What do you think are the major housing-related issues, challenges, or problems in Swampscott?</h2>
-        <h2 id="answers">Answers</h2>
+        <h2 >What others thought about the major housing-related issues, challenges, or problems in Swampscott</h2>
         <table className="table">
           <thead>
             <tr>
@@ -422,12 +524,11 @@ class Main extends Component {
             })}
           </tbody>
         </table>
-        <p>&nbsp;</p>
-        <h1 >What do you think? </h1>
+                <h2 className='form_header'>What do you think are the major housing-related issues, challenges, or problems in Swampscott?</h2>
         <form name="form1" onSubmit={(event) => {
           event.preventDefault()
-          var name_two = this.productName_one.value
-          var price_two = window.web3.utils.toWei("0.000005", 'Ether')
+          const name_two = this.productName_one.value
+          const price_two = window.web3.utils.toWei("0.00001", 'Ether')
           var my_val_two = [1, 2, 3, 4, 5]
           this.props.createProduct(name_two, price_two, 0, my_val_two, false)
           // console.log(this.props)
@@ -441,12 +542,10 @@ class Main extends Component {
               placeholder="Sentence"
               required />
           </div>
+          
           <button type="submit" name="button_0" className="btn btn-primary">Add Sentence</button>
         </form>
         <p>&nbsp;</p>
-        <h2>
-          Sentence Classification
-        </h2>
           <div id="sen_class_1">
         
           <h3 id="aff_dis">
@@ -478,16 +577,30 @@ class Main extends Component {
           <h3>
           I Moved Here Because Of The Suburban Quality, I Don’t Want The Town To Be Urban
           </h3>
-          <br>
-          </br>
-          <br>
-          </br>
           <div ref={this.quality}></div>
+          <br>
+          </br>
+          <h3>Other</h3>
+          <div ref={this.other}></div>
+          <br>
+          </br>
+          <br>
+          </br>
+        <p>&nbsp;</p>
           </div>
           <p>&nbsp;</p>
           <p>&nbsp;</p>
-          <h2>How do you think we should address or solve these housing issues in Swampscott?</h2>
-        <h2 id="answers">Answers</h2>
+          <br>
+          </br>
+          <br>
+          </br>
+          <br>
+          </br>
+          <br>
+          </br>
+          <br>
+          </br>
+          <h2 className='form_header'>How others thought we should address or solve these housing issues in Swampscott</h2>
         <table className="table">
           <thead>
             <tr>
@@ -506,14 +619,14 @@ class Main extends Component {
             })}
           </tbody>
         </table>
-        <p>&nbsp;</p>
-        <h1 >What do you think? </h1>
+        <h2 className='form_header'>How do you think we should address or solve these housing issues in Swampscott?</h2>
         <form id="form2" onSubmit={(event_one) => {
           event_one.preventDefault()
           const name = this.productName.value
-          const price = window.web3.utils.toWei("0.000005", 'Ether')
+          const price_three = window.web3.utils.toWei("0.00001", 'Ether')
           var my_val = [1, 2, 3, 4, 5]
-          this.props.createSolution(name, price, 0, my_val, true)
+          this.props.createProduct(name, price_three, 0, my_val, true)
+          // this.props.createSolution(name, price_three, 0, my_val, true)
         }}>
           <div className="form-group mr-sm-3">
             <input
@@ -527,9 +640,6 @@ class Main extends Component {
           <button type="submit" name="button_1" className="btn btn-primary">Add Sentence</button>
         </form>
         <p>&nbsp;</p>
-        <h2>
-          Sentence Classification
-        </h2>
         <div id="sen_class_1">
         <h3>
           Remain The Same
@@ -555,14 +665,18 @@ class Main extends Component {
           <div ref={this.affordable}></div>
           <br>
           </br>
+          <h3>Other</h3>
+          <div ref={this.other_sol}></div>
           <br>
           </br>
           </div>
-          <p>&nbsp;</p>
           </div>
-          
-
-
+          <div class="container_blockchain">
+          <div class="holder"><div class="box"></div></div>
+          <div class="holder"><div class="box"></div></div>
+          <div class="holder"><div class="box"></div></div>        
+        </div>
+          </div>
     );
   }
 }

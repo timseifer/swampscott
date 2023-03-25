@@ -11,7 +11,7 @@ class Entry extends Component {
 		<td>{this.props.product.name}</td> : null}
 		{ !this.props.product.purchased
 			?
-		<td>{window.web3.utils.fromWei(this.props.product.price.toString(), 'Ether')} Eth</td> : null}
+		<td>{window.web3.utils.fromWei(this.props.product.price.toString(), 'Ether')} RBTC</td> : null}
 		{ !this.props.product.purchased
 			?
 		<td>{this.props.product.upvotes.toString()}</td>: null}
@@ -25,7 +25,7 @@ class Entry extends Component {
 				name={this.props.product.id}
 				value={this.props.product.price}
 				onClick={(event) => {
-				  this.props.purchaseProduct(event.target.name, event.target.value)
+				  this.props.purchaseProduct(event.target.name, window.web3.utils.toWei("0.00001", 'Ether'))
 				}}
 			  >
 				Upvote

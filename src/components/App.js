@@ -4,6 +4,8 @@ import './App.css';
 import Marketplace from '../abis/Marketplace.json'
 import Navbar from './Navbar'
 import Main from './Main'
+import './Loading.scss'
+import { expect } from 'chai';
 
 class App extends Component {
 
@@ -18,40 +20,48 @@ class App extends Component {
       await window.ethereum.enable()
     }
     else if (window.web3) {
-      window.web3 = new Web3(window.ethereum)
+      window.web3 = new Web3(window.web3)
+      await window.web3.enable()
     }
     else {
-      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+      window.web3 = new Web3(window.ethereum)
+      window.location.reload();
+      // window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
     }
   }
 
   async loadBlockchainData() {
-    const web3 = window.web3
+    const web3 = new Web3(window.ethereum)
     // Load account
     const accounts = await web3.eth.getAccounts()
     this.setState({ account: accounts[0] })
     const networkId = await web3.eth.net.getId()
     const networkData = Marketplace.networks[networkId]
     if(networkData) {
-      console.log(networkData)
+      // console.log(networkData)
       const marketplace = web3.eth.Contract(Marketplace.abi, networkData.address.toString().toLowerCase())
-      console.log(marketplace)
+      // console.log(marketplace)
       this.setState({ marketplace })
       const productCount = await marketplace.methods.productCount().call()
       this.setState({ productCount })
       const vote_end = await marketplace.methods.getCurrentVote().call()
       this.setState({vote_end})
-      const historyProdCount = await marketplace.methods.historyProdCount().call()
-      this.setState({ historyProdCount })
-      const products_historical = await marketplace.methods.products_historical().call()
-      this.setState({products_historical })
+      // const historyProdCount = await marketplace.methods.historyProdCount().call()
+      // this.setState({ historyProdCount })
+      // const products_historical = await marketplace.methods.products_historical().call()
+      // this.setState({products_historical })
       // Load products
+      try{
       for (var i = 1; i <= productCount; i++) {
+        console.log(i)
         const product = await marketplace.methods.products(i).call()
         this.setState({
           products: [...this.state.products, product]
         })
       }
+    }catch{
+      window.alert('Problems Encountered With Network, refresh the page')
+    }
       this.setState({ loading: false})
     } else {
       window.alert('Marketplace contract not deployed to detected network.')
@@ -81,7 +91,7 @@ class App extends Component {
   createProduct(name, price, upvotes, contributors, isSol) {
     this.setState({ loading: true })
     this.state.marketplace.methods.createProduct(name, price, upvotes, contributors, isSol).send({ from: this.state.account })
-    .once('receipt', (receipt) => {
+    .once('transactionHash', (transactionHash) => {
       this.setState({ loading: false })
     })
   }
@@ -89,23 +99,24 @@ class App extends Component {
   createSolution(name, price, upvotes, contributors, isSol) {
     this.setState({ loading: true })
     this.state.marketplace.methods.createSolution(name, price, upvotes, contributors, isSol).send({ from: this.state.account })
-    .once('receipt', (receipt) => {
+    .once('transactionHash', (transactionHash) => {
       this.setState({ loading: false })
     })
   }
 
   purchaseProduct(id, price) {
     this.setState({ loading: true })
-    this.state.marketplace.methods.purchaseProduct(id).send({ from: this.state.account, value: price, gasLimit: 5000000})
-    .once('receipt', (receipt) => {
+    this.state.marketplace.methods.purchaseProduct(id, price).send({ from: this.state.account})
+    .once('transactionHash', (transactionHash) => {
       this.setState({ loading: false })
     })
   }
 
+
   createVoteEnd() {
     this.setState({ loading: true })
     this.state.marketplace.methods.createVoteEnd().send({ from: this.state.account })
-    .once('receipt', (receipt) => {
+    .once('transactionHash', (transactionHash) => {
     this.setState({ loading: false })
     })
     console.log(this.state.marketplace.methods.getCurrentVote())
@@ -130,13 +141,25 @@ class App extends Component {
   render() {
     return (
       <div className='all_encomp'>
+        <link href='https://fonts.googleapis.com/css?family=Cabin+Condensed:700' rel='stylesheet' type='text/css'></link>
         <div id="particles-js">
             <main role="main" className="col-lg-12 d-flex">
               { this.state.loading
-                ? <div id="loader" className="text-center"><p className="text-center">Loading...</p></div>
+                ? <div className="body_loading"><div id="container">
+                <p className="loading-text" aria-label="Loading">
+                  <span className="letter" aria-hidden="true">L</span>
+                  <span className="letter" aria-hidden="true">o</span>
+                  <span className="letter" aria-hidden="true">a</span>
+                  <span className="letter" aria-hidden="true">d</span>
+                  <span className="letter" aria-hidden="true">i</span>
+                  <span className="letter" aria-hidden="true">n</span>
+                  <span className="letter" aria-hidden="true">g</span>
+                </p>
+              </div>
+              </div>
                 : <Main
                   products={this.state.products}
-                  historicalProducts={this.state.products_historical}
+                  // historicalProducts={this.state.products_historical}
                   votez = {this.state.vote_end}
                   createProduct={this.createProduct}
                   createSolution={this.createSolution}
